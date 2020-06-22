@@ -37,7 +37,7 @@ def send_text(number, message):
 
 # randomly sleep before execution to look like less of a bot
 n = round(random.uniform(5.0, 50.5), 2)
-print("Sleeping for {n} seconds...")
+print(f"Sleeping for {n} seconds...")
 time.sleep(n)
 
 print("Executing stock check...")
