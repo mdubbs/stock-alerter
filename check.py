@@ -9,7 +9,7 @@ from twilio.rest import Client
 logging.basicConfig(
   filename='stock_alerter.log',
   filemode='w',
-  format='%(name)s - %(levelname)s - %(message)s',
+  format='%(asctime)s - %(levelname)s - %(message)s',
   level=logging.INFO
   )
 
@@ -60,8 +60,8 @@ buttons = soup.find_all('button', attrs=attrs, limit=1)
 item_name = target_name
 for b in buttons:
   if b.string.lower() == 'out of stock':
-    logging.info(f"{item_name}\nStatus: {b.string}")
+    logging.info(f"{item_name} - Status: {b.string}")
   else:
-    logging.info(f"{item_name}\nStatus: {b.string}")
+    logging.info(f"{item_name} - Status: {b.string}")
     send_text(target_number, f"{b.string.upper()} - {item_name}")
 
