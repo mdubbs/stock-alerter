@@ -1,5 +1,7 @@
 import os
 import requests
+import time
+import random
 from bs4 import BeautifulSoup
 from twilio.rest import Client
 
@@ -33,6 +35,12 @@ def send_text(number, message):
   )
   print(f"Sent SMS Alert: {message.sid}")
 
+# randomly sleep before execution to look like less of a bot
+n = round(random.uniform(5.0, 50.5), 2)
+print("Sleeping for {n} seconds...")
+time.sleep(n)
+
+print("Executing stock check...")
 html_text = requests.get(target_url).text
 soup = BeautifulSoup(html_text, 'html.parser')
 
