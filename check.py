@@ -3,6 +3,19 @@ import requests
 from bs4 import BeautifulSoup
 from twilio.rest import Client
 
+REQUIRED_ENV_VARS = [
+  'SA_TWILIO_SID',
+  'SA_TWILIO_AUTH_TOKEN',
+  'SA_TWILIO_FROM_NUMBER',
+  'SA_TARGET_NUMBER',
+  'SA_TARGET_URL',
+  'SA_ITEM_NAME'
+  ]
+
+for var in REQUIRED_ENV_VARS:
+  if var not in os.environ:
+    raise EnvironmentError(f"Failed because {var} is not set.")
+
 twilio_sid    = os.getenv('SA_TWILIO_SID')
 twilio_auth   = os.getenv('SA_TWILIO_AUTH_TOKEN')
 twilio_from   = os.getenv('SA_TWILIO_FROM_NUMBER')
@@ -14,9 +27,9 @@ def send_text(number, message):
   client = Client(twilio_sid, twilio_auth)
 
   message = client.messages.create(
-    body=message,
-    from_=twilio_from,
-    to=number
+    body  = message,
+    from_ = twilio_from,
+    to    = number
   )
   print(f"Sent SMS Alert: {message.sid}")
 
