@@ -8,9 +8,9 @@ from twilio.rest import Client
 
 logging.basicConfig(
   filename='stock_alerter.log',
-  filemode='w',
   format='%(asctime)s - %(levelname)s - %(message)s',
-  level=logging.INFO
+  level=logging.INFO,
+  datefmt='%d-%b-%y %H:%M:%S'
   )
 
 REQUIRED_ENV_VARS = [
