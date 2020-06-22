@@ -2,8 +2,15 @@ import os
 import requests
 import time
 import random
+import logging
 from bs4 import BeautifulSoup
 from twilio.rest import Client
+
+logging.basicConfig(
+  filename='stock_alerter.log',
+  filemode='w',
+  format='%(name)s - %(levelname)s - %(message)s'
+  )
 
 REQUIRED_ENV_VARS = [
   'SA_TWILIO_SID',
@@ -33,14 +40,14 @@ def send_text(number, message):
     from_ = twilio_from,
     to    = number
   )
-  print(f"Sent SMS Alert: {message.sid}")
+  logging.info(f"Sent SMS Alert: {message.sid}")
 
 # randomly sleep before execution to look like less of a bot
 n = round(random.uniform(5.0, 50.5), 2)
-print(f"Sleeping for {n} seconds...")
+logging.info(f"Sleeping for {n} seconds...")
 time.sleep(n)
 
-print("Executing stock check...")
+logging.info("Executing stock check...")
 html_text = requests.get(target_url).text
 soup = BeautifulSoup(html_text, 'html.parser')
 
@@ -52,8 +59,8 @@ buttons = soup.find_all('button', attrs=attrs, limit=1)
 item_name = target_name
 for b in buttons:
   if b.string.lower() == 'out of stock':
-    print(f"{item_name}\nStatus: {b.string}")
+    logging.info(f"{item_name}\nStatus: {b.string}")
   else:
-    print(f"{item_name}\nStatus: {b.string}")
+    logging.info(f"{item_name}\nStatus: {b.string}")
     send_text(target_number, f"{b.string.upper()} - {item_name}")
 
